@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Pago</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .checkout-container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #ff6200;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e65a00;
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h2>Confirmar Pago</h2>
+        <p id="paymentAmount"></p>
+        <div id="ATHMovil_Checkout_Button_payment"></div>
+    </div>
+
+    <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+    <script>
+        // Obtener el monto de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const amount = urlParams.get('amount');
+        document.getElementById('paymentAmount').textContent = `Cantidad a pagar: $${amount}`;
+
+        // Configuración del botón de pago de ATH Móvil
+        const ATHM_Checkout = {
+            env: 'production',
+            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
+            total: parseFloat(amount),
+            subtotal: parseFloat(amount),
+            tax: 0.00,
+            metadata1: 'Pago de prueba',
+            theme: 'btn',
+            lang: 'es'
+        };
+
+        async function authorizationATHM() {
+            console.log('Pago autorizado.');
+        }
+
+        async function cancelATHM() {
+            console.log('Pago cancelado.');
+        }
+
+        async function expiredATHM() {
+            console.log('Pago expirado.');
+        }
+    </script>
+</body>
+</html>

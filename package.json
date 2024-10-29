@@ -1,0 +1,12 @@
+{
+  "name": "athmovil-backend",
+  "version": "1.0.0",
+  "description": "Backend para manejar pagos de ATH Móvil",
+  "main": "callback.js",
+  "scripts": {
+    "start": "node callback.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
