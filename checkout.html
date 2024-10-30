@@ -1,47 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - ATH Móvil</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Checkout - ATH Móvil</title>
 </head>
 <body>
-    <div class="container">
-        <img src="athm-circle-logo.svg" alt="Logo ATH Móvil" class="logo">
-        <h1>Confirmar Pago</h1>
-        <p id="amountText"></p>
-        <div id="ATHMovil_Checkout_Button_payment"></div>
+  <div class="checkout-container">
+    <img src="athm-circle-logo.svg" alt="Logo ATH Móvil" class="logo">
+    <h1>Pagar con ATH Móvil</h1>
+    <p>Cantidad a pagar: <span id="amount"></span></p>
+    <button id="pay-button">Paga con ATH Móvil</button>
+  </div>
 
-        <script>
-            const urlParams = new URLSearchParams(window.location.search);
-            const amount = urlParams.get('amount');
-            document.getElementById('amountText').textContent = `Cantidad a pagar: $${amount}`;
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const amount = urlParams.get('amount');
+    document.getElementById('amount').textContent = `$${amount}`;
 
-            const ATHM_Checkout = {
-                env: 'production',
-                publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
-                total: parseFloat(amount),
-                subtotal: parseFloat(amount),
-                tax: 0,
-                metadata1: 'Pago prueba',
-                theme: 'btn',
-                lang: 'es'
-            };
-
-            async function authorizationATHM() {
-                console.log('Pago autorizado.');
-            }
-
-            async function cancelATHM() {
-                console.log('Pago cancelado.');
-            }
-
-            async function expiredATHM() {
-                console.log('Pago expirado.');
-            }
-        </script>
-    </div>
+    document.getElementById('pay-button').addEventListener('click', () => {
+      window.location.href = `https://payments.athmovil.com/api/phonePaymentATHM.html?amount=${amount}`;
+    });
+  </script>
 </body>
 </html>
