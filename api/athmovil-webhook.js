@@ -5,6 +5,7 @@ export default async function handler(req, res) {
   
     try {
       const evento = req.body;
+  
       console.log('Evento recibido:', evento);
   
       const {
@@ -26,6 +27,7 @@ export default async function handler(req, res) {
         message,
       } = evento;
   
+      // Log detallado de la información recibida
       console.log(`Referencia: ${referenceNumber}`);
       console.log(`Estado: ${status}`);
       console.log(`Total: ${total}`);
@@ -39,27 +41,29 @@ export default async function handler(req, res) {
       console.log(`Mensaje: ${message}`);
       console.log(`Metadata1: ${metadata1}, Metadata2: ${metadata2}`);
   
-      // Procesar los items recibidos
+      // Procesar items recibidos
       if (items && items.length > 0) {
         items.forEach((item, index) => {
           console.log(`Item ${index + 1}:`, item);
         });
+      } else {
+        console.log('No se recibieron items en este evento.');
       }
   
-      // Verificar el estado del pago
+      // Verificación del estado del pago
       if (status === 'completed') {
-        console.log(`Pago completado con referencia: ${referenceNumber}`);
+        console.log(`✅ Pago completado con referencia: ${referenceNumber}`);
       } else if (status === 'cancelled') {
-        console.log('El pago fue cancelado por el usuario.');
+        console.log('⚠️ El pago fue cancelado por el usuario.');
       } else if (status === 'expired') {
-        console.log('El pago ha expirado.');
+        console.log('⚠️ El pago ha expirado.');
       } else {
-        console.log('Estado del pago desconocido:', status);
+        console.log('⚠️ Estado del pago desconocido:', status);
       }
   
       res.status(200).json({ message: 'Evento procesado correctamente' });
     } catch (error) {
-      console.error('Error procesando el evento:', error);
+      console.error('❌ Error procesando el evento:', error);
       res.status(500).json({ message: 'Error procesando el evento' });
     }
   }
