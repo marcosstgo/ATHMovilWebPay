@@ -1,8 +1,5 @@
 {
   "routes": [
-    {
-      "src": "/api/athmovil-webhook",
-      "dest": "api/athmovil-webhook.js"
-    }
+    { "src": "/api/athmovil-webhook", "dest": "/api/athmovil-webhook.js" }
   ]
 }
