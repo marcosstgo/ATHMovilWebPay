@@ -3,67 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pago con ATH Móvil</title>
+    <title>Pagar con ATH Móvil</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="checkout-container">
         <img src="athm-circle-logo.svg" alt="Logo ATH Móvil" class="logo">
         <h1>Confirmar Pago</h1>
-        <p id="amount-text">Cantidad a pagar</p>
+        <p id="amount-text">Cantidad a pagar: $0.00</p>
         <div id="ATHMovil_Checkout_Button_payment"></div>
+        <p id="status-message"></p>
     </div>
 
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     <script>
         // Obtener la cantidad desde la URL
         const urlParams = new URLSearchParams(window.location.search);
-        const amount = parseFloat(urlParams.get('amount')) || 0;
+        const amount = parseFloat(urlParams.get('amount')).toFixed(2);
 
         // Mostrar la cantidad en la interfaz
-        document.getElementById('amount-text').innerText = `Cantidad a pagar: $${amount.toFixed(2)}`;
+        document.getElementById('amount-text').innerText = `Cantidad a pagar: $${amount}`;
 
         // Configurar el pago en ATH Móvil
         const ATHM_Checkout = {
-            env: 'production',  // Cambiar a 'sandbox' para pruebas
-            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',  // Token real o de prueba
-            total: amount,  // Monto total de la transacción
-            subtotal: amount - 1.00,  // Subtotal sin impuestos
-            tax: 1.00,  // Impuesto (ajústalo según sea necesario)
+            env: 'production',
+            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
+            total: parseFloat(amount),
+            subtotal: parseFloat(amount) - 1.00,
+            tax: 1.00,
             items: [
                 {
-                    name: "Servicio",  // Campo requerido, aunque sea vacío
-                    description: "Pago por servicios",  // Campo requerido
+                    name: "Servicio",
+                    description: "Pago por servicios",
                     quantity: 1,
-                    price: amount  // Valor recibido dinámicamente
+                    price: parseFloat(amount)
                 }
             ],
             metadata1: 'Transacción de prueba',
             metadata2: 'Información adicional',
             theme: 'btn',
-            lang: 'es',
-            
-            // Callback: Redirigir en caso de pago exitoso
-            onCompletedPayment: function(response) {
-                console.log('Pago completado:', response);
-                window.location.href = '/success.html';  // Redirección a página de éxito
-            },
-            
-            // Callback: Redirigir en caso de cancelación del pago
-            onCancelledPayment: function() {
-                console.log('Pago cancelado.');
-                window.location.href = '/cancel.html';  // Redirección a página de cancelación
-            },
-            
-            // Callback: Redirigir si el pago expira
-            onExpiredPayment: function() {
-                console.log('Pago expirado.');
-                window.location.href = '/expired.html';  // Redirección a página de expiración
-            }
+            lang: 'es'
         };
 
-        // Inicializar el botón de pago
-        ATHM_Checkout.init(ATHM_Checkout);
+        // Función para consultar el estado del pago
+        async function checkPaymentStatus(referenceNumber) {
+            try {
+                const response = await fetch(`/api/check-payment?reference=${referenceNumber}`);
+                const result = await response.json();
+                
+                if (result.status === 'completed') {
+                    window.location.href = "/success.html";
+                } else {
+                    document.getElementById('status-message').innerText = 'Esperando confirmación del pago...';
+                    setTimeout(() => checkPaymentStatus(referenceNumber), 3000); // Reintentar cada 3 segundos
+                }
+            } catch (error) {
+                console.error('Error al verificar el estado del pago:', error);
+            }
+        }
+
+        // Callback: Pago autorizado
+        async function authorizationATHM(referenceNumber) {
+            console.log('Pago autorizado.');
+            document.getElementById('status-message').innerText = 'Pago autorizado. Esperando confirmación...';
+            checkPaymentStatus(referenceNumber);
+        }
+
+        // Callback: Pago cancelado
+        async function cancelATHM() {
+            console.log('Pago cancelado.');
+            document.getElementById('status-message').innerText = 'El pago fue cancelado.';
+        }
+
+        // Callback: Pago expirado
+        async function expiredATHM() {
+            console.log('Pago expirado.');
+            document.getElementById('status-message').innerText = 'El pago ha expirado.';
+        }
     </script>
 </body>
 </html>
