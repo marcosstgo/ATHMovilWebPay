@@ -1,20 +1,20 @@
-export default async function handler(req, res) {
-    if (req.method === 'POST') {
-        const data = req.body;
-
-        console.log('Evento recibido:', data);
-
-        if (data.eventName === 'payment.received') {
-            console.log(`Pago recibido: ${data.payment.paymentId}`);
-        } else if (data.eventName === 'payment.expired') {
-            console.log('El pago expiró.');
-        } else if (data.eventName === 'payment.canceled') {
-            console.log('El pago fue cancelado.');
-        }
-
-        res.status(200).json({ message: 'Evento procesado correctamente' });
+app.post('/api/athmovil-webhook', (req, res) => {
+    const { referenceNumber, status, total, items } = req.body;
+  
+    console.log('Evento recibido:', req.body);
+  
+    if (status === 'completed') {
+      console.log(`Pago completado con referencia: ${referenceNumber} por un total de $${total}`);
     } else {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Método ${req.method} no permitido`);
+      console.log(`El pago no se completó. Estado: ${status}`);
     }
-}
+  
+    if (items && items.length > 0) {
+      console.log(`Artículo recibido: ${items[0].name || "Sin nombre"} - Cantidad: ${items[0].quantity}`);
+    } else {
+      console.log('Advertencia: No se recibieron artículos en el evento.');
+    }
+  
+    res.status(200).send('Evento procesado correctamente');
+  });
+  
