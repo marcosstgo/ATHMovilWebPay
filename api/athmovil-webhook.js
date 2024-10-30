@@ -1,22 +1,28 @@
-// api/athmovil-webhook.js
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-      const paymentData = req.body;
-      console.log('Webhook recibido:', paymentData);
+      try {
+        const event = req.body;
   
-      if (paymentData.status === 'completed') {
-        // Procesa el pago completado
-        console.log('Pago completado:', paymentData);
-      } else if (paymentData.status === 'cancel') {
-        // Procesa cancelación del pago
-        console.log('Pago cancelado:', paymentData);
-      } else if (paymentData.status === 'expired') {
-        // Procesa expiración del pago
-        console.log('Pago expirado:', paymentData);
+        console.log('Evento recibido:', event);
+  
+        // Lógica para manejar cada tipo de evento
+        if (event.eventName === 'transaction_completed') {
+          console.log('Pago completado con éxito:', event);
+          // Aquí puedes almacenar o procesar la transacción
+        } else if (event.eventName === 'transaction_expired') {
+          console.log('El pago ha expirado');
+        } else if (event.eventName === 'transaction_canceled') {
+          console.log('El pago ha sido cancelado');
+        }
+  
+        res.status(200).json({ message: 'Evento recibido correctamente' });
+      } catch (error) {
+        console.error('Error procesando el evento:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
       }
-      res.status(200).end(); // Respuesta OK
     } else {
-      res.status(405).json({ message: 'Método no permitido' });
+      res.setHeader('Allow', ['POST']);
+      res.status(405).end(`Método ${req.method} no permitido`);
     }
   }
   
