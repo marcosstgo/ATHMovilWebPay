@@ -1,25 +1,26 @@
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        console.log('Evento recibido:', req.body);
+        const event = req.body;
+        console.log('Evento recibido:', event);
 
-        // Maneja eventos específicos del webhook aquí
-        switch (req.body.event) {
-            case 'payment_received':
-                console.log('Pago recibido');
+        switch (event.eventName) {
+            case 'PAYMENT_COMPLETED':
+                console.log('Pago recibido:', event.data);
+                res.status(200).json({ message: 'Pago confirmado' });
                 break;
-            case 'payment_expired':
+            case 'PAYMENT_EXPIRED':
                 console.log('Pago expirado');
+                res.status(200).json({ message: 'Pago expirado' });
                 break;
-            case 'payment_canceled':
+            case 'PAYMENT_CANCELED':
                 console.log('Pago cancelado');
+                res.status(200).json({ message: 'Pago cancelado' });
                 break;
             default:
-                console.log('Evento desconocido');
+                res.status(400).json({ error: 'Evento no manejado' });
         }
-
-        res.status(200).json({ status: 'ok' });
     } else {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Método ${req.method} no permitido`);
+        res.setHeader('Allow', 'POST');
+        res.status(405).end('Método no permitido');
     }
 }
