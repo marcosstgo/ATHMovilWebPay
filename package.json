@@ -1,12 +1,8 @@
 {
-  "name": "athmovil-backend",
+  "name": "athmovil-integration",
   "version": "1.0.0",
-  "description": "Backend para manejar pagos de ATH Móvil",
-  "main": "callback.js",
   "scripts": {
-    "start": "node callback.js"
+    "dev": "vercel dev"
   },
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+  "dependencies": {}
 }

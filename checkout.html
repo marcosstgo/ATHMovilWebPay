@@ -1,39 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - ATH Móvil</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-    <div class="container">
-        <div class="card">
-            <h2>Confirmar Pago</h2>
-            <p id="amount-display"></p>
-            <div id="ATHMovil_Checkout_Button_payment"></div>
-        </div>
-    </div>
-
+  <div class="checkout-container">
+    <h2>Confirmar Pago</h2>
+    <p id="amountToPay"></p>
+    <div id="ATHMovil_Checkout_Button_payment"></div>
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const amount = urlParams.get('amount') || 0;
-        document.getElementById('amount-display').textContent = `Cantidad a pagar: $${amount}`;
+      const urlParams = new URLSearchParams(window.location.search);
+      const amount = urlParams.get('amount');
+      document.getElementById('amountToPay').textContent = `Cantidad a pagar: $${amount}`;
 
-        const ATHM_Checkout = {
-            env: 'production',
-            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
-            total: parseFloat(amount),
-            subtotal: parseFloat(amount),
-            tax: 0,
-            metadata1: 'Pago desde Vercel',
-            theme: 'btn',
-            lang: 'es',
-        };
+      const ATHM_Checkout = {
+        env: 'production',
+        publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
+        total: parseFloat(amount),
+        subtotal: parseFloat(amount),
+        tax: 0,
+        metadata1: 'Pago de prueba',
+        theme: 'btn',
+        lang: 'es'
+      };
 
-        async function authorizationATHM() {
-            console.log('Pago autorizado.');
-        }
+      async function authorizationATHM() {
+        console.log('Pago autorizado.');
+      }
 
-        async function cancelATHM() {
-            console.log('Pago cancelado.');
-        }
+      async function cancelATHM() {
+        console.log('Pago cancelado.');
+      }
 
-        async function expiredATHM() {
-            console.log('Pago expirado.');
-        }
+      async function expiredATHM() {
+        console.log('Pago expirado.');
+      }
     </script>
+  </div>
 </body>
+</html>
