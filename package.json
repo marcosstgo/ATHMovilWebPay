@@ -2,7 +2,9 @@
   "name": "athmovil-integration",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vercel dev"
+    "start": "vercel dev"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

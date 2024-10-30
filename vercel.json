@@ -1,13 +1,7 @@
 {
-    "rewrites": [
-      { "source": "/", "destination": "/index.html" },
-      { "source": "/checkout", "destination": "/checkout.html" }
-    ],
-    "functions": {
-      "api/athmovil-webhook.js": {
-        "memory": 128,
-        "maxDuration": 10
-      }
-    }
+    "version": 2,
+    "routes": [
+      { "src": "/api/athmovil-webhook", "dest": "/api/athmovil-webhook.js" }
+    ]
   }
   
