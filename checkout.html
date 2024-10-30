@@ -3,52 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagar con ATH Móvil</title>
+    <title>Pago con ATH Móvil</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="checkout-container">
         <img src="athm-circle-logo.svg" alt="Logo ATH Móvil" class="logo">
-        <h1>Pagar con ATH Móvil</h1>
-        <p id="amount-text">Cantidad a pagar: $1</p>
+        <h1>Confirmar Pago</h1>
+        <p id="amount-text">Cantidad a pagar: $0.00</p>
         <div id="ATHMovil_Checkout_Button_payment"></div>
     </div>
 
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     <script>
+        // Obtener la cantidad desde la URL
         const urlParams = new URLSearchParams(window.location.search);
-        const amount = urlParams.get('amount') || 1;
+        const amount = parseFloat(urlParams.get('amount')) || 0;
 
-        document.getElementById('amount-text').innerText = `Cantidad a pagar: $${amount}`;
+        // Mostrar la cantidad en la interfaz
+        document.getElementById('amount-text').innerText = `Cantidad a pagar: $${amount.toFixed(2)}`;
 
+        // Configurar el pago en ATH Móvil
         const ATHM_Checkout = {
-            env: 'production',
-            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
-            total: parseFloat(amount),
-            subtotal: parseFloat(amount),
-            tax: 0,
+            env: 'production',  // Cambiar a 'sandbox' para pruebas
+            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',  // Token real o de prueba
+            total: amount,  // Monto total de la transacción
+            subtotal: amount - 1.00,  // Subtotal sin impuestos
+            tax: 1.00,  // Impuesto (puede ajustarse según sea necesario)
             items: [
                 {
-                    name: "", // Campo requerido, aunque sea vacío
-                    description: "",
+                    name: "",  // Campo requerido, aunque vacío
+                    description: "",  // Campo requerido, aunque vacío
                     quantity: 1,
-                    price: parseFloat(amount)
+                    price: amount  // Valor recibido dinámicamente
                 }
             ],
             metadata1: 'Transacción de prueba',
-            metadata2: '',
+            metadata2: 'Información adicional',
             theme: 'btn',
-            lang: 'es',
-            onCompletedPayment: function(response) {
-                console.log('Pago completado:', response);
-            },
-            onExpiredPayment: function() {
-                console.log('Pago expirado');
-            },
-            onCancelledPayment: function() {
-                console.log('Pago cancelado');
-            }
+            lang: 'es'
         };
+
+        // Callback: Pago autorizado
+        async function authorizationATHM() {
+            console.log('Pago autorizado.');
+        }
+
+        // Callback: Pago cancelado
+        async function cancelATHM() {
+            console.log('Pago cancelado.');
+        }
+
+        // Callback: Pago expirado
+        async function expiredATHM() {
+            console.log('Pago expirado.');
+        }
     </script>
 </body>
 </html>
