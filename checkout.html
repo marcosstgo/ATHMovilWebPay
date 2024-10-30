@@ -1,45 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - ATH Móvil</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar con ATH Móvil</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="checkout-container">
-    <h2>Confirmar Pago</h2>
-    <p id="amountToPay"></p>
-    <div id="ATHMovil_Checkout_Button_payment"></div>
+    <div class="container">
+        <img src="athm-circle-logo.svg" alt="Logo ATH Móvil" class="logo">
+        <h1>Pagar con ATH Móvil</h1>
+
+        <form id="payment-form">
+            <label for="amount">Cantidad a pagar:</label>
+            <input type="number" id="amount" name="amount" min="1" required>
+            <button type="submit">Proceder al pago</button>
+        </form>
+
+        <div id="ATHMovil_Checkout_Button_payment"></div>
+    </div>
+
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const amount = urlParams.get('amount');
-      document.getElementById('amountToPay').textContent = `Cantidad a pagar: $${amount}`;
+        var publicToken = "6a96089f63cb67eb90cb27f468ca33cb2a832c78"; // Token actualizado
 
-      const ATHM_Checkout = {
-        env: 'production',
-        publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
-        total: parseFloat(amount),
-        subtotal: parseFloat(amount),
-        tax: 0,
-        metadata1: 'Pago de prueba',
-        theme: 'btn',
-        lang: 'es'
-      };
+        const paymentForm = document.getElementById('payment-form');
+        paymentForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Evita la recarga de la página
 
-      async function authorizationATHM() {
-        console.log('Pago autorizado.');
-      }
+            const amount = parseFloat(document.getElementById('amount').value);
+            if (amount <= 0) {
+                alert('Por favor, ingresa una cantidad válida.');
+                return;
+            }
 
-      async function cancelATHM() {
-        console.log('Pago cancelado.');
-      }
+            const ATHM_Checkout = {
+                env: 'production', // Producción para pruebas reales
+                publicToken: publicToken,
+                total: amount,
+                subtotal: amount,
+                tax: 0,
+                metadata1: 'Compra de prueba',
+                theme: 'btn',
+                lang: 'es'
+            };
 
-      async function expiredATHM() {
-        console.log('Pago expirado.');
-      }
+            console.log('Iniciando pago con ATH Móvil:', ATHM_Checkout);
+
+            // Eventos de éxito, cancelación y expiración
+            window.ATHM_Checkout.onAuthorization = function () {
+                console.log('Pago autorizado');
+            };
+
+            window.ATHM_Checkout.onCancel = function () {
+                console.log('Pago cancelado');
+            };
+
+            window.ATHM_Checkout.onExpired = function () {
+                console.log('Pago expirado');
+            };
+        });
     </script>
-  </div>
 </body>
 </html>
