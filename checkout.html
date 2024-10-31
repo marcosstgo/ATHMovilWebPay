@@ -4,23 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pago con ATH Móvil</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .checkout-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
-    <div class="checkout-container text-center p-4 bg-white rounded shadow">
-        <img src="athm-circle-logo.svg" alt="Logo ATH Móvil" class="logo mb-4">
-        <h1 class="h3 mb-3">Confirmar Pago</h1>
-        <p id="amount-text" class="lead">Cantidad a pagar: $0.00</p>
-        <div id="ATHMovil_Checkout_Button_payment" class="d-flex justify-content-center mt-4">
-            <button id="buttonATHM" type="button" onclick="sendATHMPayment()" class="btn btn-warning btn-lg">
-                Paga con ATH Móvil
-            </button>
-        </div>
+<body class="bg-light d-flex align-items-center vh-100">
+
+    <div class="checkout-container">
+        <img src="athm-circle-logo.svg" alt="Logo ATH Móvil" class="logo">
+        <h1 class="h4 mb-3">Confirmar Pago</h1>
+        <p id="amount-text" class="mb-4">Cantidad a pagar: $0.00</p>
+        <div id="ATHMovil_Checkout_Button_payment"></div>
     </div>
 
-    <!-- ATH Móvil JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     <script>
         // Obtener la cantidad desde la URL
@@ -49,36 +59,26 @@
             metadata2: 'Información adicional',
             theme: 'btn',
             lang: 'es',
-            phoneNumber: "7872439670" // Número de teléfono para recibir la notificación
+            phoneNumber: '7872439670'
         };
-
-        // Enviar pago con ATH Móvil
-        function sendATHMPayment() {
-            console.log("Iniciando el pago con ATH Móvil...");
-            // Aquí se inicia la solicitud de pago. Puede incluir lógica adicional si es necesario.
-        }
 
         // Callback: Pago autorizado
         async function authorizationATHM() {
             console.log('Pago autorizado.');
-            alert('Pago autorizado correctamente. ¡Gracias!');
+            alert('Pago autorizado con éxito.');
         }
 
         // Callback: Pago cancelado
         async function cancelATHM() {
             console.log('Pago cancelado.');
-            alert('El pago fue cancelado. Inténtalo nuevamente si deseas completar la transacción.');
+            alert('El pago ha sido cancelado.');
         }
 
         // Callback: Pago expirado
         async function expiredATHM() {
             console.log('Pago expirado.');
-            alert('El pago ha expirado. Por favor, intenta de nuevo.');
+            alert('El pago ha expirado. Intente nuevamente.');
         }
     </script>
-
-    <!-- Bootstrap JS (opcional para interacciones avanzadas) -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
