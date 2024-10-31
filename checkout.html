@@ -28,44 +28,64 @@
     <div class="container checkout-container">
         <img src="athm-circle-logo.svg" alt="ATH Móvil Logo" class="logo">
         <h1 class="text-center">Confirmar Pago</h1>
-        <p class="text-center" id="amount-text">Cantidad a pagar: $1.00</p>
+        <p class="text-center" id="amount-text">Cantidad a pagar: $0.00</p>
         <div id="ATHMovil_Checkout_Button_payment"></div>
     </div>
 
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     <script>
+        // Obtener la cantidad desde la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const amount = parseFloat(urlParams.get('amount')) || 0.00;
+
+        // Mostrar la cantidad en la interfaz
+        document.getElementById('amount-text').innerText = `Cantidad a pagar: $${amount.toFixed(2)}`;
+
         // Configuración y manejo del pago con ATH Móvil
         const ATHM_Checkout = {
             env: 'production',
             publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
-            total: 1.00,
-            subtotal: 1.00,
+            total: amount,
+            subtotal: amount,
             tax: 0.00,
+            metadata1: 'Transacción de prueba',
+            metadata2: 'Información adicional',
             items: [
                 {
                     name: "Servicio",
                     description: "Pago por servicios",
                     quantity: 1,
-                    price: 1.00
+                    price: amount
                 }
             ],
-            metadata1: 'Transacción de prueba',
-            metadata2: 'Información adicional',
             theme: 'btn',
-            lang: 'es'
+            lang: 'es',
+            // Añade el número de teléfono si es necesario
+            phoneNumber: "7872439670"
         };
 
         async function authorizationATHM() {
-            console.log('Pago autorizado.');
+            const responseAuth = await authorization();
+            console.log('Pago autorizado:', responseAuth);
+
+            // Guardar la referencia de la transacción
+            if (responseAuth.status === "success" && responseAuth.data.ecommerceStatus === "COMPLETED") {
+                localStorage.setItem("transactionReference", responseAuth.data.referenceNumber);
+            }
+
             window.location.href = "confirmation.html";
         }
 
         async function cancelATHM() {
-            console.log('Pago cancelado.');
+            const responseCancel = await findPaymentATHM();
+            console.log('Pago cancelado:', responseCancel);
+            alert('El pago ha sido cancelado.');
         }
 
         async function expiredATHM() {
-            console.log('Pago expirado.');
+            const responseExpired = await findPaymentATHM();
+            console.log('Pago expirado:', responseExpired);
+            alert('El pago ha expirado. Por favor, intente nuevamente.');
         }
     </script>
 </body>
