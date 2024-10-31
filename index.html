@@ -8,15 +8,20 @@
 </head>
 <body class="bg-light">
     <div class="container d-flex flex-column align-items-center justify-content-center vh-100">
-        <img src="athm-circle-logo.svg" alt="ATH Móvil Logo" class="logo mb-4" width="150">
-        <h1 class="text-center mb-3">Pagar con ATH Móvil</h1>
-        <form id="payment-form" action="/checkout.html" method="GET" class="w-50">
-            <div class="mb-3">
-                <label for="amount" class="form-label">Cantidad a pagar:</label>
-                <input type="number" step="0.01" id="amount" name="amount" min="1.00" required class="form-control">
+        <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+            <div class="text-center">
+                <img src="athm-circle-logo.svg" alt="ATH Móvil Logo" width="80" class="mb-3">
+                <h2 class="fw-bold">Pagar con ATH Móvil</h2>
+                <p class="text-muted">Complete los detalles a continuación para proceder con su pago.</p>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Proceder al pago</button>
-        </form>
+            <form id="payment-form" action="/checkout.html" method="GET">
+                <div class="mb-4">
+                    <label for="amount" class="form-label">Cantidad a pagar:</label>
+                    <input type="number" step="0.01" id="amount" name="amount" min="1.00" required class="form-control" placeholder="Ej: 25.00">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Proceder al pago</button>
+            </form>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
