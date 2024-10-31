@@ -32,7 +32,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
-    <script>
+    <script type="text/javascript">
         // Obtener la cantidad desde la URL
         const urlParams = new URLSearchParams(window.location.search);
         const amount = parseFloat(urlParams.get('amount')) || 0;
@@ -40,44 +40,51 @@
         // Mostrar la cantidad en la interfaz
         document.getElementById('amount-text').innerText = `Cantidad a pagar: $${amount.toFixed(2)}`;
 
-        // Configurar el pago en ATH Móvil
+        // Configurar el pago en ATH Móvil con los detalles necesarios
         const ATHM_Checkout = {
             env: 'production',
-            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
+            publicToken: 'a66ce73d04f2087615f6320b724defc5b4eedc55', // Cambia este valor con tu propio token
+            timeout: 600,
+            orderType: '',
+            theme: 'btn',
+            lang: 'es',
             total: amount,
             subtotal: amount - 1.00,
             tax: 1.00,
+            metadata1: 'Transacción de prueba',
+            metadata2: 'Información adicional',
             items: [
                 {
                     name: "Servicio",
                     description: "Pago por servicios",
                     quantity: 1,
-                    price: amount
+                    price: amount,
+                    tax: 1.00,
+                    metadata: "prueba metadata"
                 }
             ],
-            metadata1: 'Transacción de prueba',
-            metadata2: 'Información adicional',
-            theme: 'btn',
-            lang: 'es',
-            phoneNumber: ''
+            phoneNumber: "7872439670"
         };
 
         // Callback: Pago autorizado
-        async function authorizationATHM() {
-            console.log('Pago autorizado.');
-            
+        async function authorizationATHM(){
+            const responseAuth = await authorization();
+            console.log(responseAuth);
+            alert('Pago autorizado con éxito.');
         }
 
         // Callback: Pago cancelado
-        async function cancelATHM() {
-            console.log('Pago cancelado.');
-            
+        async function cancelATHM(){
+            const responseCancel = await findPaymentATHM();
+            console.log(responseCancel);
+            alert('El pago ha sido cancelado.');
         }
 
         // Callback: Pago expirado
-        async function expiredATHM() {
-            console.log('Pago expirado.');
-            
+        async function expiredATHM(){
+            const responseExpired = await findPaymentATHM();
+            console.log(responseExpired);
+            alert('El pago ha expirado. Intente nuevamente.');
         }
     </script>
 </body>
