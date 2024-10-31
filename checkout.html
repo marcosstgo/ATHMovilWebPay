@@ -70,21 +70,21 @@
         async function authorizationATHM(){
             const responseAuth = await authorization();
             console.log(responseAuth);
-            alert('Pago autorizado con éxito.');
+            
         }
 
         // Callback: Pago cancelado
         async function cancelATHM(){
             const responseCancel = await findPaymentATHM();
             console.log(responseCancel);
-            alert('El pago ha sido cancelado.');
+            
         }
 
         // Callback: Pago expirado
         async function expiredATHM(){
             const responseExpired = await findPaymentATHM();
             console.log(responseExpired);
-            alert('El pago ha expirado. Intente nuevamente.');
+            
         }
     </script>
 </body>
