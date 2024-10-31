@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pago</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container d-flex flex-column align-items-center justify-content-center vh-100">
+        <div class="card text-center mt-5 p-4 shadow-lg">
+            <div class="card-body">
+                <h1 class="card-title text-success mb-3">¡Pago Realizado con Éxito!</h1>
+                <p class="card-text">Tu transacción ha sido completada correctamente.</p>
+                <p class="card-text">Referencia de la transacción: <span id="referenceNumber" class="fw-bold"></span></p>
+                <p class="card-text">Gracias por tu pago.</p>
+                <a href="/" class="btn btn-primary mt-3">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulación de los datos de respuesta de la transacción (para fines de prueba)
+        const transactionData = {
+            status: "success",
+            data: {
+                referenceNumber: "215070440-8a36d420882a293a018849cae9f500a8",
+                ecommerceStatus: "COMPLETED"
+            }
+        };
+
+        // Mostrar el número de referencia de la transacción si está disponible
+        document.addEventListener("DOMContentLoaded", () => {
+            const referenceElement = document.getElementById("referenceNumber");
+            if (transactionData.status === "success" && transactionData.data.ecommerceStatus === "COMPLETED") {
+                referenceElement.textContent = transactionData.data.referenceNumber;
+            } else {
+                referenceElement.textContent = "No disponible";
+            }
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
