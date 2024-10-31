@@ -68,11 +68,6 @@
             const responseAuth = await authorization();
             console.log('Pago autorizado:', responseAuth);
 
-            // Guardar la referencia de la transacción
-            if (responseAuth.status === "success" && responseAuth.data.ecommerceStatus === "COMPLETED") {
-                localStorage.setItem("transactionReference", responseAuth.data.referenceNumber);
-            }
-
             window.location.href = "confirmation.html";
         }
 
