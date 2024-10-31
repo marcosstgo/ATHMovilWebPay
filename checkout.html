@@ -25,45 +25,39 @@
 
         // Configurar el pago en ATH Móvil
         const ATHM_Checkout = {
-            env: 'production',  // Cambiar a 'sandbox' para pruebas
-            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',  // Token real o de prueba
-            total: amount,  // Monto total de la transacción
-            subtotal: amount - 1.00,  // Subtotal sin impuestos
-            tax: 1.00,  // Impuesto (ajústalo según sea necesario)
+            env: 'production',
+            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
+            total: parseFloat(amount),
+            subtotal: parseFloat(amount) - 1.00,
+            tax: 1.00,
             items: [
                 {
-                    name: "Servicio",  // Campo requerido, aunque sea vacío
-                    description: "Pago por servicios",  // Campo requerido
+                    name: "Servicio",
+                    description: "Pago por servicios",
                     quantity: 1,
-                    price: amount  // Valor recibido dinámicamente
+                    price: parseFloat(amount)
                 }
             ],
             metadata1: 'Transacción de prueba',
             metadata2: 'Información adicional',
             theme: 'btn',
-            lang: 'es',
-            
-            // Callback: Redirigir en caso de pago exitoso
-            onCompletedPayment: function(response) {
-                console.log('Pago completado:', response);
-                window.location.href = '/success.html';  // Redirección a página de éxito
-            },
-            
-            // Callback: Redirigir en caso de cancelación del pago
-            onCancelledPayment: function() {
-                console.log('Pago cancelado.');
-                window.location.href = '/cancel.html';  // Redirección a página de cancelación
-            },
-            
-            // Callback: Redirigir si el pago expira
-            onExpiredPayment: function() {
-                console.log('Pago expirado.');
-                window.location.href = '/expired.html';  // Redirección a página de expiración
-            }
+            lang: 'es'
         };
 
-        // Inicializar el botón de pago
-        ATHM_Checkout.init(ATHM_Checkout);
+        // Callback: Pago autorizado
+        async function authorizationATHM() {
+            console.log('Pago autorizado.');
+        }
+
+        // Callback: Pago cancelado
+        async function cancelATHM() {
+            console.log('Pago cancelado.');
+        }
+
+        // Callback: Pago expirado
+        async function expiredATHM() {
+            console.log('Pago expirado.');
+        }
     </script>
 </body>
 </html>
