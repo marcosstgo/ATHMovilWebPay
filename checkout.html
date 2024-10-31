@@ -74,13 +74,13 @@
         async function cancelATHM() {
             const responseCancel = await findPaymentATHM();
             console.log('Pago cancelado:', responseCancel);
-            alert('El pago ha sido cancelado.');
+            
         }
 
         async function expiredATHM() {
             const responseExpired = await findPaymentATHM();
             console.log('Pago expirado:', responseExpired);
-            alert('El pago ha expirado. Por favor, intente nuevamente.');
+            
         }
     </script>
 </body>
