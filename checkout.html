@@ -3,75 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout ATH Móvil</title>
+    <title>Checkout - Confirmar Pago</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
 </head>
-<body class="bg-dark text-center text-white">
-    <div class="container d-flex flex-column align-items-center justify-content-center vh-100">
-        <h1>Confirmar Pago</h1>
-        <p id="amountToPay">Cantidad a pagar: $0.00</p>
-        
-        <div id="ATHMovil_Checkout_Button_payment" style="width: 150px;">
-            <!-- Botón de Pago de ATH Móvil -->
-            <div id="buttonATHMPB" type="button" onclick="sendATHMPayment()" class="athm-principal-button">
-                Paga con ATH Móvil
-            </div>
+<body class="bg-dark text-white d-flex justify-content-center align-items-center vh-100">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">Confirmar Pago</h1>
+        <p class="lead mb-5">Cantidad a pagar: $<span id="amount-display">1.00</span></p>
+
+        <div id="ATHMovil_Checkout_Button_payment" class="d-flex justify-content-center">
+            <button id="buttonATHM" type="button" onclick="sendATHMPayment()" class="btn btn-warning btn-lg shadow-sm">
+                Paga con ATH móvil
+            </button>
         </div>
     </div>
 
     <script>
-        // Obtener el valor del total desde la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const amount = parseFloat(urlParams.get('amount')) || 0.00;
-        
-        // Mostrar la cantidad a pagar en el HTML
-        document.getElementById('amountToPay').innerText = `Cantidad a pagar: $${amount.toFixed(2)}`;
-
-        // Configuración del objeto ATHM_Checkout
         const ATHM_Checkout = {
             env: 'production',
-            publicToken: 'a66ce73d04f2087615f6320b724defc5b4eedc55',  // Token de tu cuenta de negocio
+            publicToken: 'a66ce73d04f2087615f6320b724defc5b4eedc55',
             timeout: 600,
+            orderType: '',
             theme: 'btn',
             lang: 'es',
-            total: amount,  // Monto total a pagar
-            tax: 0.00,
-            subtotal: amount,
-            metadata1: 'ID de Tienda',
-            metadata2: 'Localización',
+            total: 1.00,
+            subtotal: 1.00,
+            tax: 0,
+            metadata1: 'Prueba1',
+            metadata2: 'Prueba2',
             items: [
                 {
-                    "name": "Servicio",
-                    "description": "Pago de servicio",
+                    "name": "Producto de prueba",
+                    "description": "Descripción del producto",
                     "quantity": "1",
-                    "price": amount.toFixed(2),
+                    "price": "1.00",
                     "tax": "0",
-                    "metadata": "Pago del servicio"
+                    "metadata": "metadata_producto"
                 }
             ],
-            phoneNumber: "7872439670"  // Teléfono del negocio que recibirá el pago
+            phoneNumber: "7872439670"
         };
 
-        // Función para enviar el pago con ATH Móvil
-        function sendATHMPayment() {
-            athm.initiatePayment(ATHM_Checkout);
+        async function sendATHMPayment() {
+            console.log("Iniciando pago con ATH Móvil...");
         }
 
-        // Funciones de callback para la respuesta de la API
         async function authorizationATHM() {
             const responseAuth = await authorization();
-            console.log('Transacción Autorizada:', responseAuth);
+            console.log("Autorización completada:", responseAuth);
         }
 
         async function cancelATHM() {
             const responseCancel = await findPaymentATHM();
-            console.log('Transacción Cancelada:', responseCancel);
+            console.log("Pago cancelado:", responseCancel);
         }
 
         async function expiredATHM() {
             const responseExpired = await findPaymentATHM();
-            console.log('Transacción Expirada:', responseExpired);
+            console.log("Pago expirado:", responseExpired);
         }
     </script>
+
+    <!-- Bootstrap JS (opcional para interacciones avanzadas) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
