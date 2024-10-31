@@ -46,8 +46,3 @@ button {
 button:hover {
   background-color: #e65c00;
 }
-#button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
