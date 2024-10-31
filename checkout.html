@@ -16,17 +16,14 @@
 
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     <script>
-        // Obtener la cantidad desde la URL
         const urlParams = new URLSearchParams(window.location.search);
         const amount = parseFloat(urlParams.get('amount')) || 0;
 
-        // Mostrar la cantidad en la interfaz
         document.getElementById('amount-text').innerText = `Cantidad a pagar: $${amount.toFixed(2)}`;
 
-        // Configurar el pago en ATH Móvil
         const ATHM_Checkout = {
             env: 'production',
-            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',  // Nuevo token público
+            publicToken: '6a96089f63cb67eb90cb27f468ca33cb2a832c78',
             timeout: 600,
             theme: 'btn',
             lang: 'es',
@@ -43,22 +40,22 @@
                     price: amount
                 }
             ],
-            phoneNumber: ""
+            phoneNumber: "7872439670"
         };
 
-        // Callback: Pago autorizado
         async function authorizationATHM() {
             const responseAuth = await authorization();
             console.log('Pago autorizado:', responseAuth);
+
+            // Redirigir a la página de confirmación
+            window.location.href = "/confirmation.html";
         }
 
-        // Callback: Pago cancelado
         async function cancelATHM() {
             const responseCancel = await findPaymentATHM();
             console.log('Pago cancelado:', responseCancel);
         }
 
-        // Callback: Pago expirado
         async function expiredATHM() {
             const responseExpired = await findPaymentATHM();
             console.log('Pago expirado:', responseExpired);
