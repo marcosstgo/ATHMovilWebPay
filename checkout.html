@@ -6,18 +6,6 @@
     <title>Confirmar Pago</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <style>
-        .athm-principal-button {
-        width: 300px !important; /* Anula el ancho de la librería y establece uno personalizado */
-        height: 70px !important; /* Anula la altura de la librería y establece una nueva */
-        background-size: 50% !important; /* Ajusta el tamaño de la imagen dentro del botón */
-        background-position: center !important; /* Centra la imagen dentro del botón */
-        background-repeat: no-repeat !important;
-        border-radius: 5px !important; /* Personalización adicional */
-        padding: 0 !important; /* Asegura que el padding no afecte el tamaño */
-        display: inline-block !important; /* Si es necesario, puedes asegurar la alineación */
-        }
-
-        
         .checkout-container {
             text-align: center;
             padding-top: 100px;
@@ -29,16 +17,20 @@
             margin-bottom: 20px;
         }
         #ATHMovil_Checkout_Button_payment {
+            min-width: unset !important;
+            min-height: unset !important;
             margin-top: 20px;
             display: flex;
             justify-content: center;
         }
+        #ATHMovil_Checkout_Button_payment button {
         
-        #ATHMovil_Checkout_Button_payment .athm-principal-button {
-        min-width: 150px !important; /* Set your desired width */
-        min-height: 40px !important; /* Set your desired height */
-        width: 100% !important; /* Ensures it stays centered within its container */
+        width: 250px; /* Ajusta el tamaño según tus preferencias */
+        height: 50px; /* Ajusta la altura según tus preferencias */
+        display: block;
+        margin: 0 auto; /* Centra el botón */
         }
+        
     </style>
 </head>
 <body class="bg-light">
